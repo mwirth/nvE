@@ -140,23 +140,20 @@ public class View extends ViewPart {
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		TableColumn column1 = new TableColumn(table, SWT.NONE);
 		TableColumn column2 = new TableColumn(table, SWT.NONE);
-		TableColumn column3 = new TableColumn(table, SWT.NONE);
 		for (int i = 0; i < 100; i++) {
 			TableItem item = new TableItem(table, SWT.NONE);
-			item.setText(new String[] {"cell " + i + " 0", 	"cell " + i + " 1", "cell " + i + " 2" });
+			item.setText(new String[] {"Text " + i + " ...", 	"Datum"});
 		}
 		column1.pack();
 		column2.pack();
-		column3.pack();
 
 		// create a TableCursor to navigate around the table
 		final TableCursor cursor = new TableCursor(table, SWT.NONE);
-		// create an editor to edit the cell when the user hits "ENTER" 
-		// while over a cell in the table
+		
+		// create an editor to edit the cell when the user hits "ENTER" while over a cell in the table
 		final ControlEditor editor = new ControlEditor(cursor);
 		editor.grabHorizontal = true;
 		editor.grabVertical = true;
-		
 		
 		cursor.addSelectionListener(new SelectionAdapter() {
 			// when the TableEditor is over a cell, select the corresponding row in 
