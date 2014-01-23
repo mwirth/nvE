@@ -156,6 +156,7 @@ public class View extends ViewPart
 					else
 						table.setSelection(selectionIndex + 1);
 
+					handleSelection();
 				}
 				else if (e.keyCode == SWT.ARROW_UP)
 				{
@@ -164,7 +165,26 @@ public class View extends ViewPart
 						table.setSelection(0);
 					else
 						table.setSelection(selectionIndex - 1);
+
+					handleSelection();
 				}
+				else if (e.keyCode == SWT.CR)
+				{
+					int selectionIndex = table.getSelectionIndex();
+					if (selectionIndex == -1)
+					{
+						// create a new note
+					}
+					else
+					{
+						// edit current note
+						text.setFocus();
+					}
+				}
+			}
+
+			private void handleSelection()
+			{
 				TableItem selectedItem = table.getSelection()[0];
 				if (selectedItem == null)
 				{
@@ -180,6 +200,32 @@ public class View extends ViewPart
 			}
 		});
 
+		text.addKeyListener(new KeyListener()
+		{
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+				if (e.stateMask == SWT.COMMAND && e.character == 'l')
+				{
+					System.out.println("command+l pressed");
+					box.setFocus();
+				}
+				else if (e.keyCode == SWT.ESC)
+				{
+					System.out.println("ESC pressed");
+					box.setText("");
+					box.setFocus();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
 		viewer.addSelectionChangedListener(new ISelectionChangedListener()
 		{
 
@@ -187,6 +233,13 @@ public class View extends ViewPart
 			public void selectionChanged(SelectionChangedEvent event)
 			{
 				System.out.println("selectionChaged");
+				TableItem selectedItem = table.getSelection()[0];
+				Note selectedNote = (Note) selectedItem.getData();
+				String title = selectedNote.getTitle();
+				box.setText(title);
+				box.setSelection(0, title.length() - 1);
+				text.setText(selectedNote.getText());
+				text.setFocus();
 			}
 		});
 
