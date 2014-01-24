@@ -18,10 +18,12 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -103,37 +105,28 @@ public class View extends ViewPart
 	public void createPartControl(Composite parent)
 	{
 		parent.setLayout(new GridLayout(1, false));
+
 		final Text box = new Text(parent, SWT.BORDER);
 		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		box.setLayoutData(gridData);
 
-		Composite viewercomp = new Composite(parent, SWT.NONE);
-		viewercomp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		viewercomp.setLayout(new FillLayout(SWT.VERTICAL));
+		SashForm sashForm = new SashForm(parent, SWT.VERTICAL);
+		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		viewer = new TableViewer(viewercomp, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new TableViewer(sashForm, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 
 		final Table table = viewer.getTable();
-
+		table.setLinesVisible(true);
 		// // Provide the input to the ContentProvider
 		Note[] dummyNotes = getDummyNotes();
 
 		viewer.setInput(dummyNotes);
 
-		final Text text = new Text(parent, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		final Text text = new Text(sashForm, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		text.setLayoutData(gridData);
-
-		// // create a TableCursor to navigate around the table
-		// final TableCursor cursor = new TableCursor(table, SWT.NONE);
-		//
-		// // create an editor to edit the cell when the user hits "ENTER" while over a cell in the table
-		// final ControlEditor editor = new ControlEditor(cursor);
-		// editor.grabHorizontal = true;
-		// editor.grabVertical = true;
-
-		// createDatabinding(text);
+		sashForm.setWeights(new int[] { 1, 1 });
 
 		box.addKeyListener(new KeyListener()
 		{
@@ -197,6 +190,7 @@ public class View extends ViewPart
 				box.setText(title);
 				box.setSelection(0, title.length() - 1);
 				text.setText(selectedNote.getText());
+				text.setSelection(selectedNote.getLastCursorPos());
 			}
 		});
 
@@ -226,6 +220,35 @@ public class View extends ViewPart
 
 			}
 		});
+
+		text.addFocusListener(new FocusListener()
+		{
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				String text2 = text.getText();
+				int caretPosition = text.getCaretPosition();
+				TableItem selectedItem = table.getSelection()[0];
+				if (selectedItem == null)
+				{
+					box.setText("");
+					text.setText("");
+					return;
+				}
+				Note selectedNote = (Note) selectedItem.getData();
+				selectedNote.setText(text2);
+				selectedNote.setLastCursorPos(caretPosition);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		viewer.addSelectionChangedListener(new ISelectionChangedListener()
 		{
 
@@ -240,147 +263,9 @@ public class View extends ViewPart
 				box.setSelection(0, title.length() - 1);
 				text.setText(selectedNote.getText());
 				text.setFocus();
+				text.setSelection(selectedNote.getLastCursorPos());
 			}
 		});
-
-		// cursor.addSelectionListener(new SelectionAdapter()
-		// {
-		// // when the TableEditor is over a cell, select the corresponding row in the table
-		// @Override
-		// public void widgetSelected(SelectionEvent e)
-		// {
-		// table.setSelection(new TableItem[] { cursor.getRow() });
-		// }
-		//
-		// // when the user hits "ENTER" in the TableCursor, pop up a text editor so that they can change the text of the cell
-		// @Override
-		// public void widgetDefaultSelected(SelectionEvent e)
-		// {
-		// final Text text = new Text(cursor, SWT.NONE);
-		// TableItem row = cursor.getRow();
-		// int column = cursor.getColumn();
-		// text.setText(row.getText(column));
-		// text.addKeyListener(new KeyAdapter()
-		// {
-		// @Override
-		// public void keyPressed(KeyEvent e)
-		// {
-		// // close the text editor and copy the data over when the user hits "ENTER"
-		// if (e.character == SWT.CR)
-		// {
-		// TableItem row = cursor.getRow();
-		// int column = cursor.getColumn();
-		// row.setText(column, text.getText());
-		// text.dispose();
-		// }
-		// // close the text editor when the user hits "ESC"
-		// if (e.character == SWT.ESC)
-		// {
-		// text.dispose();
-		// }
-		// }
-		// });
-		//
-		// // close the text editor when the user tabs away
-		// text.addFocusListener(new FocusAdapter()
-		// {
-		// @Override
-		// public void focusLost(FocusEvent e)
-		// {
-		// text.dispose();
-		// }
-		// });
-		// editor.setEditor(text);
-		// text.setFocus();
-		// }
-		// });
-		//
-		// // Hide the TableCursor when the user hits the "CTRL" or "SHIFT" key.
-		// // This allows the user to select multiple items in the table.
-		// cursor.addKeyListener(new KeyAdapter()
-		// {
-		// @Override
-		// public void keyPressed(KeyEvent e)
-		// {
-		// if (e.keyCode == SWT.CTRL || e.keyCode == SWT.SHIFT || ( e.stateMask & SWT.CONTROL ) != 0
-		// || ( e.stateMask & SWT.SHIFT ) != 0)
-		// {
-		// cursor.setVisible(false);
-		// }
-		// }
-		// });
-		//
-		// // When the user double clicks in the TableCursor, pop up a text editor so that they can change the text of the cell.
-		// cursor.addMouseListener(new MouseAdapter()
-		// {
-		// @Override
-		// public void mouseDown(MouseEvent e)
-		// {
-		// final Text text = new Text(cursor, SWT.NONE);
-		// TableItem row = cursor.getRow();
-		// int column = cursor.getColumn();
-		// text.setText(row.getText(column));
-		// text.addKeyListener(new KeyAdapter()
-		// {
-		// @Override
-		// public void keyPressed(KeyEvent e)
-		// {
-		// // close the text editor and copy the data over when the user hits "ENTER"
-		// if (e.character == SWT.CR)
-		// {
-		// TableItem row = cursor.getRow();
-		// int column = cursor.getColumn();
-		// row.setText(column, text.getText());
-		// text.dispose();
-		// }
-		//
-		// // close the text editor when the user hits "ESC"
-		// if (e.character == SWT.ESC)
-		// {
-		// text.dispose();
-		// }
-		// }
-		// });
-		//
-		// // close the text editor when the user clicks away
-		// text.addFocusListener(new FocusAdapter()
-		// {
-		// @Override
-		// public void focusLost(FocusEvent e)
-		// {
-		// text.dispose();
-		// }
-		// });
-		// editor.setEditor(text);
-		// text.setFocus();
-		// }
-		// });
-		//
-		// // Show the TableCursor when the user releases the "SHIFT" or "CTRL" key.
-		// // This signals the end of the multiple selection task.
-		// table.addKeyListener(new KeyAdapter()
-		// {
-		// @Override
-		// public void keyReleased(KeyEvent e)
-		// {
-		// if (e.keyCode == SWT.CONTROL && ( e.stateMask & SWT.SHIFT ) != 0)
-		// return;
-		// if (e.keyCode == SWT.SHIFT && ( e.stateMask & SWT.CONTROL ) != 0)
-		// return;
-		// if (e.keyCode != SWT.CONTROL && ( e.stateMask & SWT.CONTROL ) != 0)
-		// return;
-		// if (e.keyCode != SWT.SHIFT && ( e.stateMask & SWT.SHIFT ) != 0)
-		// return;
-		//
-		// TableItem[] selection = table.getSelection();
-		// TableItem row = ( selection.length == 0 ) ? table.getItem(table.getTopIndex()) : selection[0];
-		// table.showItem(row);
-		// cursor.setSelection(row, cursor.getColumn());
-		// cursor.setVisible(true);
-		// cursor.setFocus();
-		// }
-		// });
-
 	}
 
 	/**

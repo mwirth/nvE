@@ -1,4 +1,4 @@
-package org.wimi.nve;
+package org.wimi.nve.example;
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.events.*;

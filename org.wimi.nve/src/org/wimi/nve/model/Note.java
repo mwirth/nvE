@@ -14,7 +14,10 @@ public class Note
 {
 	private String title;
 	private String text;
+
+	// TODO: integrate Metadata?
 	private Date lastChanged;
+	private int lastCursorPos;
 
 	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
@@ -31,6 +34,7 @@ public class Note
 		// String format = formatter.format(new Date());
 
 		lastChanged = new Date();
+		lastCursorPos = 0;
 	}
 
 	/**
@@ -73,6 +77,23 @@ public class Note
 	public Date getLastChanged()
 	{
 		return lastChanged;
+	}
+
+	/**
+	 * @return the lastCursorPos
+	 */
+	public int getLastCursorPos()
+	{
+		return lastCursorPos;
+	}
+
+	/**
+	 * @param lastCursorPos
+	 *            the lastCursorPos to set
+	 */
+	public void setLastCursorPos(int lastCursorPos)
+	{
+		this.lastCursorPos = lastCursorPos;
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener listener)

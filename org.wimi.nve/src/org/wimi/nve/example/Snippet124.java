@@ -1,4 +1,4 @@
-package org.wimi.nve;
+package org.wimi.nve.example;
 import org.eclipse.swt.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;

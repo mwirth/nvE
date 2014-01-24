@@ -1,10 +1,11 @@
 /**
  *
  */
-package org.wimi.nve;
+package org.wimi.nve.example;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -16,8 +17,9 @@ import org.eclipse.swt.widgets.Text;
  */
 public class GuiTest extends Composite
 {
-	private Text text;
+	private Text box;
 	private Table table;
+	private Text text;
 
 	/**
 	 * Create the composite.
@@ -29,14 +31,20 @@ public class GuiTest extends Composite
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
 
-		text = new Text(this, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		text.setBounds(0, 0, 64, 19);
+		box = new Text(this, SWT.BORDER);
+		box.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		box.setBounds(0, 0, 64, 19);
 
-		TableViewer tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
+		SashForm sashForm = new SashForm(this, SWT.VERTICAL);
+		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		TableViewer tableViewer = new TableViewer(sashForm, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
-		table.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		table.setLinesVisible(true);
 		table.setBounds(0, 0, 18, 81);
+
+		text = new Text(sashForm, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.V_SCROLL | SWT.CANCEL | SWT.MULTI);
+		sashForm.setWeights(new int[] { 1, 1 });
 
 	}
 
