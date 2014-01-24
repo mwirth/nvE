@@ -3,14 +3,12 @@
  */
 package org.wimi.nve.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Date;
 
 /**
  * @author mwirth
  */
-public class Note
+public class Note extends ObservableNote
 {
 	private String title;
 	private String text;
@@ -18,8 +16,6 @@ public class Note
 	// TODO: integrate Metadata?
 	private Date lastChanged;
 	private int lastCursorPos;
-
-	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
 	/**
 	 * @param title
@@ -51,7 +47,7 @@ public class Note
 	 */
 	public void setTitle(String title)
 	{
-		this.title = title;
+		firePropertyChange("title", this.title, this.title = title);
 	}
 
 	/**
@@ -68,7 +64,7 @@ public class Note
 	 */
 	public void setText(String text)
 	{
-		this.text = text;
+		firePropertyChange("text", this.text, this.text = text);
 	}
 
 	/**
@@ -94,15 +90,5 @@ public class Note
 	public void setLastCursorPos(int lastCursorPos)
 	{
 		this.lastCursorPos = lastCursorPos;
-	}
-
-	public void addPropertyChangeListener(PropertyChangeListener listener)
-	{
-		changeSupport.addPropertyChangeListener(listener);
-	}
-
-	public void removePropertyChangeListener(PropertyChangeListener listener)
-	{
-		changeSupport.removePropertyChangeListener(listener);
 	}
 }

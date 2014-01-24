@@ -2,33 +2,37 @@ package org.wimi.nve;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.IViewerObservableValue;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -38,6 +42,8 @@ import org.wimi.nve.model.Note;
 public class View extends ViewPart
 {
 	public static final String ID = "org.wimi.nve.view";
+
+	private Note actNote;
 
 	private TableViewer viewer;
 
@@ -58,9 +64,9 @@ public class View extends ViewPart
 
 		public Object[] getElements(Object parent)
 		{
-			if (parent instanceof Object[])
+			if (parent instanceof List)
 			{
-				return (Object[]) parent;
+				return ( (List<?>) parent ).toArray();
 			}
 			return new Object[0];
 		}
@@ -75,6 +81,7 @@ public class View extends ViewPart
 				Note note = (Note) obj;
 				if (index == 0)
 					return note.getTitle();
+
 				else if (index == 1)
 				{
 					DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
@@ -120,7 +127,7 @@ public class View extends ViewPart
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		// // Provide the input to the ContentProvider
-		Note[] dummyNotes = getDummyNotes();
+		List<Note> dummyNotes = getDummyNotes();
 
 		viewer.setInput(dummyNotes);
 
@@ -128,38 +135,61 @@ public class View extends ViewPart
 		text.setLayoutData(gridData);
 		sashForm.setWeights(new int[] { 1, 1 });
 
-		box.addKeyListener(new KeyListener()
+		DataBindingContext dbc = new DataBindingContext();
+
+		// binding for the TextField which should display the text for the Note
+		IObservableValue targetText = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue targetBox = WidgetProperties.text(SWT.Modify).observe(box);
+
+		IViewerObservableValue actSelectedNote = ViewerProperties.singleSelection().observe(viewer);
+
+		// observe the text attribute of the selection
+		IObservableValue textDetailValue = BeanProperties.value(Note.class, "text").observeDetail(actSelectedNote);
+		IObservableValue boxDetailValue = BeanProperties.value(Note.class, "title").observeDetail(actSelectedNote);
+
+		dbc.bindValue(targetText, textDetailValue);
+		dbc.bindValue(targetBox, boxDetailValue);
+
+		// add listeners
+		box.addKeyListener(new KeyAdapter()
 		{
-
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				// TODO Auto-generated method stub
-
-			}
 
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
 				if (e.keyCode == SWT.ARROW_DOWN)
 				{
-					int selectionIndex = table.getSelectionIndex();
-					if (selectionIndex == -1)
-						table.setSelection(0);
+					int selRow = table.getSelectionIndex();
+					if (selRow == -1)
+					{
+						selRow = 0;
+					}
 					else
-						table.setSelection(selectionIndex + 1);
-
-					handleSelection();
+					{
+						selRow++;
+					}
+					actNote = (Note) viewer.getElementAt(selRow);
+					viewer.setSelection(new StructuredSelection(actNote), true);
+					e.doit = false;
+					box.selectAll();
 				}
 				else if (e.keyCode == SWT.ARROW_UP)
 				{
+					int selRow = table.getSelectionIndex();
+
 					int selectionIndex = table.getSelectionIndex();
 					if (selectionIndex == -1 || selectionIndex == 0)
-						table.setSelection(0);
+					{
+						selRow = 0;
+					}
 					else
-						table.setSelection(selectionIndex - 1);
-
-					handleSelection();
+					{
+						selRow--;
+					}
+					actNote = (Note) viewer.getElementAt(selRow);
+					viewer.setSelection(new StructuredSelection(actNote), true);
+					e.doit = false;
+					box.selectAll();
 				}
 				else if (e.keyCode == SWT.CR)
 				{
@@ -170,31 +200,16 @@ public class View extends ViewPart
 					}
 					else
 					{
+						// Note note = (Note) ( (StructuredSelection) viewer.getSelection() ).getFirstElement();
 						// edit current note
 						text.setFocus();
+						text.setSelection(actNote.getLastCursorPos());
 					}
 				}
 			}
-
-			private void handleSelection()
-			{
-				TableItem selectedItem = table.getSelection()[0];
-				if (selectedItem == null)
-				{
-					box.setText("");
-					text.setText("");
-					return;
-				}
-				Note selectedNote = (Note) selectedItem.getData();
-				String title = selectedNote.getTitle();
-				box.setText(title);
-				box.setSelection(0, title.length() - 1);
-				text.setText(selectedNote.getText());
-				text.setSelection(selectedNote.getLastCursorPos());
-			}
 		});
 
-		text.addKeyListener(new KeyListener()
+		text.addKeyListener(new KeyAdapter()
 		{
 
 			@Override
@@ -203,67 +218,40 @@ public class View extends ViewPart
 				if (e.stateMask == SWT.COMMAND && e.character == 'l')
 				{
 					System.out.println("command+l pressed");
+					box.selectAll();
 					box.setFocus();
 				}
 				else if (e.keyCode == SWT.ESC)
 				{
 					System.out.println("ESC pressed");
-					box.setText("");
+					// Note note = (Note) ( (StructuredSelection) viewer.getSelection() ).getFirstElement();
+					// actNote.setLastCursorPos(text.getCaretPosition());
+					Text t = (Text) e.widget;
+					int caretPosition = t.getCaretPosition();
+					actNote.setLastCursorPos(caretPosition);
+					// clear the selection
+					StructuredSelection sel = new StructuredSelection();
+					viewer.setSelection(sel);
+
 					box.setFocus();
 				}
 			}
-
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				// TODO Auto-generated method stub
-
-			}
 		});
 
-		text.addFocusListener(new FocusListener()
+		text.addFocusListener(new FocusAdapter()
 		{
-
+			/*
+			 * (non-Javadoc)
+			 * @see org.eclipse.swt.events.FocusAdapter#focusLost(org.eclipse.swt.events.FocusEvent)
+			 */
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				String text2 = text.getText();
-				int caretPosition = text.getCaretPosition();
-				TableItem selectedItem = table.getSelection()[0];
-				if (selectedItem == null)
-				{
-					box.setText("");
-					text.setText("");
-					return;
-				}
-				Note selectedNote = (Note) selectedItem.getData();
-				selectedNote.setText(text2);
-				selectedNote.setLastCursorPos(caretPosition);
-			}
-
-			@Override
-			public void focusGained(FocusEvent e)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		viewer.addSelectionChangedListener(new ISelectionChangedListener()
-		{
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent event)
-			{
-				System.out.println("selectionChaged");
-				TableItem selectedItem = table.getSelection()[0];
-				Note selectedNote = (Note) selectedItem.getData();
-				String title = selectedNote.getTitle();
-				box.setText(title);
-				box.setSelection(0, title.length() - 1);
-				text.setText(selectedNote.getText());
-				text.setFocus();
-				text.setSelection(selectedNote.getLastCursorPos());
+				Text t = (Text) e.widget;
+				int caretPosition = t.getCaretPosition();
+				// do not set position if ESC was pressed
+				System.out.println("actNote: " + actNote.getTitle() + " cursorPos: " + caretPosition);
+				actNote.setLastCursorPos(caretPosition);
 			}
 		});
 	}
@@ -293,14 +281,16 @@ public class View extends ViewPart
 		// viewer.getControl().setFocus();
 	}
 
-	private static Note[] getDummyNotes()
+	private static List<Note> getDummyNotes()
 	{
 		int size = 100;
-		Note[] notes = new Note[size];
+		List<Note> notes = new ArrayList<Note>(size);
+		// Note[] notes = new Note[size];
 		for (int i = 0; i < size; i++)
 		{
-			notes[i] = new Note("Titel" + i + " ...");
-			notes[i].setText("Text" + i + " ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ENDE");
+			Note n = new Note("Titel" + i + " ...");
+			notes.add(n);
+			n.setText("Text" + i + " ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ENDE");
 		}
 		return notes;
 	}
