@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.wimi.nve.model;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: com.wimi.nve.model.notesmodel,
+ com.wimi.nve.model.notesmodel.impl,
+ com.wimi.nve.model.notesmodel.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
+ org.eclipse.ui;bundle-version="3.105.0"
+Bundle-ActivationPolicy: lazy
