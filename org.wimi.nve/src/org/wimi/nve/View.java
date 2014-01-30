@@ -158,7 +158,7 @@ public class View extends ViewPart
 		viewer.setLabelProvider(new ViewLabelProvider());
 
 		model = load();
-
+	
 		ObservableListContentProvider contentProvider = new ObservableListContentProvider();
 
 		// put all attributes (from class Note) that are going to be shown into a map and associate the column title
@@ -227,7 +227,8 @@ public class View extends ViewPart
 			public void keyTraversed(TraverseEvent e)
 			{
 				System.out.println("traversed");
-				if (e.keyCode == SWT.CR && actNote != null)
+				int length = titleBox.getText().length();
+				if (e.keyCode == SWT.CR && actNote != null && length == 0)
 				{
 					System.out.println("actNote: " + actNote.getTitle());
 					model.getNotes().remove(actNote);
