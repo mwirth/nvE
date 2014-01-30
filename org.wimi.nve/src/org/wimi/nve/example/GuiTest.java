@@ -17,9 +17,11 @@ import org.eclipse.swt.widgets.Text;
  */
 public class GuiTest extends Composite
 {
-	private Text box;
+	private Text boxTitle;
 	private Table table;
 	private Text text;
+	private Composite composite;
+	private Text boxFilter;
 
 	/**
 	 * Create the composite.
@@ -31,9 +33,14 @@ public class GuiTest extends Composite
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
 
-		box = new Text(this, SWT.BORDER);
-		box.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		box.setBounds(0, 0, 64, 19);
+		composite = new Composite(this, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+
+		boxFilter = new Text(composite, SWT.BORDER);
+		boxFilter.setBounds(0, 0, 64, 19);
+
+		boxTitle = new Text(composite, SWT.BORDER);
+		boxTitle.setBounds(0, 0, 440, 19);
 
 		SashForm sashForm = new SashForm(this, SWT.VERTICAL);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
