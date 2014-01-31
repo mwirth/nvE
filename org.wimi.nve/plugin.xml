@@ -53,5 +53,17 @@
          </menu>
       </menuContribution>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.wimi.nve.application"
+            name="nvE">
+         <property
+               name="appName"
+               value="nvE">
+         </property>
+      </product>
+   </extension>
 
 </plugin>
