@@ -69,16 +69,9 @@ public class View extends ViewPart
 	public static final String ID = "org.wimi.nve.view";
 
 	private Note actNote;
-
 	private TableViewer viewer;
-
 	private Model model;
 
-	/**
-	 * The content provider class is responsible for providing objects to the view. It can wrap existing objects in adapters or
-	 * simply return objects as-is. These objects may be sensitive to the current input of the view, or ignore it and always show
-	 * the same content (like Task List, for example).
-	 */
 	class ViewContentProvider implements IStructuredContentProvider
 	{
 		public void inputChanged(Viewer v, Object oldInput, Object newInput)
@@ -144,7 +137,7 @@ public class View extends ViewPart
 		textComposite.setLayout(new GridLayout(2, false));
 		textComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		final Text filterBox = new Text(textComposite, SWT.BORDER);
+		final Text filterBox = new Text(textComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		filterBox.setLayoutData(gd);
 
@@ -158,7 +151,7 @@ public class View extends ViewPart
 		viewer.setLabelProvider(new ViewLabelProvider());
 
 		model = load();
-	
+
 		ObservableListContentProvider contentProvider = new ObservableListContentProvider();
 
 		// put all attributes (from class Note) that are going to be shown into a map and associate the column title
@@ -236,10 +229,32 @@ public class View extends ViewPart
 			}
 		});
 
+		filterBox.addTraverseListener(new TraverseListener()
+		{
+			@Override
+			public void keyTraversed(TraverseEvent e)
+			{
+				System.out.println("filterBox traversed");
+			}
+		});
+
+		filterBox.addModifyListener(new ModifyListener()
+		{
+
+			@Override
+			public void modifyText(ModifyEvent e)
+			{
+				if (filterBox.getText().length() <= 0)
+				{
+					filter.setSearchText("");
+					viewer.refresh();
+				}
+			}
+		});
+
 		// add listeners
 		filterBox.addKeyListener(new KeyAdapter()
 		{
-
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
@@ -288,6 +303,11 @@ public class View extends ViewPart
 					if (selectionIndex == -1)
 					{
 						// create a new note
+						Note note = createNote(filterBox.getText());
+						actNote = note;
+						// actNote = (Note) viewer.getElementAt(i);
+						viewer.setSelection(new StructuredSelection(actNote), true);
+						text.setFocus();
 					}
 					else
 					{
@@ -323,13 +343,15 @@ public class View extends ViewPart
 							return;
 						}
 					}
+					// no fit Title found
+					StructuredSelection sel = new StructuredSelection();
+					viewer.setSelection(sel);
 				}
 			}
 		});
 
 		text.addKeyListener(new KeyAdapter()
 		{
-
 			@Override
 			public void keyReleased(KeyEvent e)
 			{
@@ -378,10 +400,12 @@ public class View extends ViewPart
 
 		text.addModifyListener(new ModifyListener()
 		{
-
 			@Override
 			public void modifyText(ModifyEvent e)
 			{
+				if (text.isFocusControl())
+					return;
+
 				String typedTitle = filterBox.getText();
 				String detailText = text.getText();
 				int indexOf = detailText.indexOf(typedTitle);
@@ -391,6 +415,22 @@ public class View extends ViewPart
 				text.setSelection(indexOf, indexOf + typedTitle.length());
 			}
 		});
+	}
+
+	/**
+	 * @param text
+	 */
+	private Note createNote(String title)
+	{
+		NotesmodelPackageImpl.init();
+
+		NotesmodelFactory factory = NotesmodelFactory.eINSTANCE;
+
+		Note note = factory.createNote();
+		note.setTitle(title);
+		note.setText("");
+		model.getNotes().add(note);
+		return note;
 	}
 
 	/**

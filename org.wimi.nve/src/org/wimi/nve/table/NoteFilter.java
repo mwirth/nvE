@@ -11,26 +11,22 @@ public class NoteFilter extends ViewerFilter
 
 	public void setSearchText(String s)
 	{
-		// ensure that the value can be used for matching
-		this.searchString = ".*" + s + ".*";
+		this.searchString = s;
 	}
 
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element)
 	{
-		if (searchString == null || searchString.length() == 0)
-		{
+		if (searchString == null || searchString.length() == 0 || element == null)
 			return true;
-		}
+
 		Note n = (Note) element;
-		if (n.getTitle().matches(searchString))
-		{
+
+		if (n.getTitle().indexOf(searchString) != -1)
 			return true;
-		}
-		if (n.getText().matches(searchString))
-		{
+
+		if (n.getText().indexOf(searchString) != -1)
 			return true;
-		}
 
 		return false;
 	}
