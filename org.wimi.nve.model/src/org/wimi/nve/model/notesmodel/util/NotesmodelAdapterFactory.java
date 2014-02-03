@@ -1,8 +1,6 @@
 /**
  */
-package com.wimi.nve.model.notesmodel.util;
-
-import com.wimi.nve.model.notesmodel.*;
+package org.wimi.nve.model.notesmodel.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -11,12 +9,14 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.wimi.nve.model.notesmodel.*;
+
 /**
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see com.wimi.nve.model.notesmodel.NotesmodelPackage
+ * @see org.wimi.nve.model.notesmodel.NotesmodelPackage
  * @generated
  */
 public class NotesmodelAdapterFactory extends AdapterFactoryImpl
@@ -112,13 +112,13 @@ public class NotesmodelAdapterFactory extends AdapterFactoryImpl
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.wimi.nve.model.notesmodel.Note <em>Note</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.wimi.nve.model.notesmodel.Note <em>Note</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.wimi.nve.model.notesmodel.Note
+	 * @see org.wimi.nve.model.notesmodel.Note
 	 * @generated
 	 */
 	public Adapter createNoteAdapter()
@@ -127,13 +127,13 @@ public class NotesmodelAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.wimi.nve.model.notesmodel.Tag <em>Tag</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.wimi.nve.model.notesmodel.Tag <em>Tag</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.wimi.nve.model.notesmodel.Tag
+	 * @see org.wimi.nve.model.notesmodel.Tag
 	 * @generated
 	 */
 	public Adapter createTagAdapter()
@@ -142,13 +142,13 @@ public class NotesmodelAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.wimi.nve.model.notesmodel.Model <em>Model</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.wimi.nve.model.notesmodel.Model <em>Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.wimi.nve.model.notesmodel.Model
+	 * @see org.wimi.nve.model.notesmodel.Model
 	 * @generated
 	 */
 	public Adapter createModelAdapter()

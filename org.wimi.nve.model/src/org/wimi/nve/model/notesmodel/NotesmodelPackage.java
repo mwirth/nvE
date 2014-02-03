@@ -1,6 +1,6 @@
 /**
  */
-package com.wimi.nve.model.notesmodel;
+package org.wimi.nve.model.notesmodel;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see com.wimi.nve.model.notesmodel.NotesmodelFactory
+ * @see org.wimi.nve.model.notesmodel.NotesmodelFactory
  * @model kind="package"
  * @generated
  */
@@ -55,14 +55,14 @@ public interface NotesmodelPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	NotesmodelPackage eINSTANCE = com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl.init();
+	NotesmodelPackage eINSTANCE = org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link com.wimi.nve.model.notesmodel.impl.NoteImpl <em>Note</em>}' class.
+	 * The meta object id for the '{@link org.wimi.nve.model.notesmodel.impl.NoteImpl <em>Note</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.wimi.nve.model.notesmodel.impl.NoteImpl
-	 * @see com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getNote()
+	 * @see org.wimi.nve.model.notesmodel.impl.NoteImpl
+	 * @see org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getNote()
 	 * @generated
 	 */
 	int NOTE = 0;
@@ -131,11 +131,11 @@ public interface NotesmodelPackage extends EPackage
 	int NOTE_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link com.wimi.nve.model.notesmodel.impl.TagImpl <em>Tag</em>}' class.
+	 * The meta object id for the '{@link org.wimi.nve.model.notesmodel.impl.TagImpl <em>Tag</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.wimi.nve.model.notesmodel.impl.TagImpl
-	 * @see com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getTag()
+	 * @see org.wimi.nve.model.notesmodel.impl.TagImpl
+	 * @see org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getTag()
 	 * @generated
 	 */
 	int TAG = 1;
@@ -167,13 +167,12 @@ public interface NotesmodelPackage extends EPackage
 	 */
 	int TAG_OPERATION_COUNT = 0;
 
-
 	/**
-	 * The meta object id for the '{@link com.wimi.nve.model.notesmodel.impl.ModelImpl <em>Model</em>}' class.
+	 * The meta object id for the '{@link org.wimi.nve.model.notesmodel.impl.ModelImpl <em>Model</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.wimi.nve.model.notesmodel.impl.ModelImpl
-	 * @see com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getModel()
+	 * @see org.wimi.nve.model.notesmodel.impl.ModelImpl
+	 * @see org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getModel()
 	 * @generated
 	 */
 	int MODEL = 2;
@@ -207,107 +206,107 @@ public interface NotesmodelPackage extends EPackage
 
 
 	/**
-	 * Returns the meta object for class '{@link com.wimi.nve.model.notesmodel.Note <em>Note</em>}'.
+	 * Returns the meta object for class '{@link org.wimi.nve.model.notesmodel.Note <em>Note</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Note</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Note
+	 * @see org.wimi.nve.model.notesmodel.Note
 	 * @generated
 	 */
 	EClass getNote();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.wimi.nve.model.notesmodel.Note#getTitle <em>Title</em>}'.
+	 * Returns the meta object for the attribute '{@link org.wimi.nve.model.notesmodel.Note#getTitle <em>Title</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Title</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Note#getTitle()
+	 * @see org.wimi.nve.model.notesmodel.Note#getTitle()
 	 * @see #getNote()
 	 * @generated
 	 */
 	EAttribute getNote_Title();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.wimi.nve.model.notesmodel.Note#getText <em>Text</em>}'.
+	 * Returns the meta object for the attribute '{@link org.wimi.nve.model.notesmodel.Note#getText <em>Text</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Text</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Note#getText()
+	 * @see org.wimi.nve.model.notesmodel.Note#getText()
 	 * @see #getNote()
 	 * @generated
 	 */
 	EAttribute getNote_Text();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.wimi.nve.model.notesmodel.Note#getLastChange <em>Last Change</em>}'.
+	 * Returns the meta object for the attribute '{@link org.wimi.nve.model.notesmodel.Note#getLastChange <em>Last Change</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Last Change</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Note#getLastChange()
+	 * @see org.wimi.nve.model.notesmodel.Note#getLastChange()
 	 * @see #getNote()
 	 * @generated
 	 */
 	EAttribute getNote_LastChange();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.wimi.nve.model.notesmodel.Note#getLastCursorPos <em>Last Cursor Pos</em>}'.
+	 * Returns the meta object for the attribute '{@link org.wimi.nve.model.notesmodel.Note#getLastCursorPos <em>Last Cursor Pos</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Last Cursor Pos</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Note#getLastCursorPos()
+	 * @see org.wimi.nve.model.notesmodel.Note#getLastCursorPos()
 	 * @see #getNote()
 	 * @generated
 	 */
 	EAttribute getNote_LastCursorPos();
 
 	/**
-	 * Returns the meta object for the reference list '{@link com.wimi.nve.model.notesmodel.Note#getTags <em>Tags</em>}'.
+	 * Returns the meta object for the reference list '{@link org.wimi.nve.model.notesmodel.Note#getTags <em>Tags</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference list '<em>Tags</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Note#getTags()
+	 * @see org.wimi.nve.model.notesmodel.Note#getTags()
 	 * @see #getNote()
 	 * @generated
 	 */
 	EReference getNote_Tags();
 
 	/**
-	 * Returns the meta object for class '{@link com.wimi.nve.model.notesmodel.Tag <em>Tag</em>}'.
+	 * Returns the meta object for class '{@link org.wimi.nve.model.notesmodel.Tag <em>Tag</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Tag</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Tag
+	 * @see org.wimi.nve.model.notesmodel.Tag
 	 * @generated
 	 */
 	EClass getTag();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.wimi.nve.model.notesmodel.Tag#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.wimi.nve.model.notesmodel.Tag#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Tag#getName()
+	 * @see org.wimi.nve.model.notesmodel.Tag#getName()
 	 * @see #getTag()
 	 * @generated
 	 */
 	EAttribute getTag_Name();
 
 	/**
-	 * Returns the meta object for class '{@link com.wimi.nve.model.notesmodel.Model <em>Model</em>}'.
+	 * Returns the meta object for class '{@link org.wimi.nve.model.notesmodel.Model <em>Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Model</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Model
+	 * @see org.wimi.nve.model.notesmodel.Model
 	 * @generated
 	 */
 	EClass getModel();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link com.wimi.nve.model.notesmodel.Model#getNotes <em>Notes</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.wimi.nve.model.notesmodel.Model#getNotes <em>Notes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Notes</em>'.
-	 * @see com.wimi.nve.model.notesmodel.Model#getNotes()
+	 * @see org.wimi.nve.model.notesmodel.Model#getNotes()
 	 * @see #getModel()
 	 * @generated
 	 */
@@ -338,11 +337,11 @@ public interface NotesmodelPackage extends EPackage
 	interface Literals
 	{
 		/**
-		 * The meta object literal for the '{@link com.wimi.nve.model.notesmodel.impl.NoteImpl <em>Note</em>}' class.
+		 * The meta object literal for the '{@link org.wimi.nve.model.notesmodel.impl.NoteImpl <em>Note</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.wimi.nve.model.notesmodel.impl.NoteImpl
-		 * @see com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getNote()
+		 * @see org.wimi.nve.model.notesmodel.impl.NoteImpl
+		 * @see org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getNote()
 		 * @generated
 		 */
 		EClass NOTE = eINSTANCE.getNote();
@@ -388,11 +387,11 @@ public interface NotesmodelPackage extends EPackage
 		EReference NOTE__TAGS = eINSTANCE.getNote_Tags();
 
 		/**
-		 * The meta object literal for the '{@link com.wimi.nve.model.notesmodel.impl.TagImpl <em>Tag</em>}' class.
+		 * The meta object literal for the '{@link org.wimi.nve.model.notesmodel.impl.TagImpl <em>Tag</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.wimi.nve.model.notesmodel.impl.TagImpl
-		 * @see com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getTag()
+		 * @see org.wimi.nve.model.notesmodel.impl.TagImpl
+		 * @see org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getTag()
 		 * @generated
 		 */
 		EClass TAG = eINSTANCE.getTag();
@@ -406,11 +405,11 @@ public interface NotesmodelPackage extends EPackage
 		EAttribute TAG__NAME = eINSTANCE.getTag_Name();
 
 		/**
-		 * The meta object literal for the '{@link com.wimi.nve.model.notesmodel.impl.ModelImpl <em>Model</em>}' class.
+		 * The meta object literal for the '{@link org.wimi.nve.model.notesmodel.impl.ModelImpl <em>Model</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.wimi.nve.model.notesmodel.impl.ModelImpl
-		 * @see com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getModel()
+		 * @see org.wimi.nve.model.notesmodel.impl.ModelImpl
+		 * @see org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl#getModel()
 		 * @generated
 		 */
 		EClass MODEL = eINSTANCE.getModel();

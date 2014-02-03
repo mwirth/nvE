@@ -1,9 +1,6 @@
 /**
  */
-package com.wimi.nve.model.notesmodel.impl;
-
-import com.wimi.nve.model.notesmodel.NotesmodelPackage;
-import com.wimi.nve.model.notesmodel.Tag;
+package org.wimi.nve.model.notesmodel.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -12,6 +9,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.wimi.nve.model.notesmodel.NotesmodelPackage;
+import org.wimi.nve.model.notesmodel.Tag;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Tag</b></em>'.
@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.wimi.nve.model.notesmodel.impl.TagImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.impl.TagImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *

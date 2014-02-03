@@ -1,18 +1,24 @@
 /**
  */
-package com.wimi.nve.model.notesmodel.impl;
+package org.wimi.nve.model.notesmodel.impl;
 
-import com.wimi.nve.model.notesmodel.Model;
-import com.wimi.nve.model.notesmodel.Note;
-import com.wimi.nve.model.notesmodel.NotesmodelPackage;
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.wimi.nve.model.notesmodel.Model;
+import org.wimi.nve.model.notesmodel.Note;
+import org.wimi.nve.model.notesmodel.NotesmodelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +27,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.wimi.nve.model.notesmodel.impl.ModelImpl#getNotes <em>Notes</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.impl.ModelImpl#getNotes <em>Notes</em>}</li>
  * </ul>
  * </p>
  *
@@ -38,6 +44,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model
 	 * @ordered
 	 */
 	protected EList<Note> notes;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

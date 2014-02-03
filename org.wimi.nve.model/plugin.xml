@@ -10,7 +10,7 @@
       <!-- @generated notesmodel -->
       <package
             uri="http://notesmodel/1.0"
-            class="com.wimi.nve.model.notesmodel.NotesmodelPackage"
+            class="org.wimi.nve.model.notesmodel.NotesmodelPackage"
             genModel="model/notesmodel.genmodel"/>
    </extension>
 

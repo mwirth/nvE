@@ -5,7 +5,7 @@
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
   <foreignModel>notesmodel.ecore</foreignModel>
-  <genPackages prefix="Notesmodel" basePackage="com.wimi.nve.model" disposableProviderFactory="true"
+  <genPackages prefix="Notesmodel" basePackage="org.wimi.nve.model" disposableProviderFactory="true"
       ecorePackage="notesmodel.ecore#/">
     <genClasses ecoreClass="notesmodel.ecore#//Note">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute notesmodel.ecore#//Note/title"/>

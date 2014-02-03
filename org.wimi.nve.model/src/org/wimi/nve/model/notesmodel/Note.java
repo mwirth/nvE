@@ -1,6 +1,6 @@
 /**
  */
-package com.wimi.nve.model.notesmodel;
+package org.wimi.nve.model.notesmodel;
 
 import java.util.Date;
 
@@ -16,15 +16,15 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link com.wimi.nve.model.notesmodel.Note#getTitle <em>Title</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.Note#getText <em>Text</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.Note#getLastChange <em>Last Change</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.Note#getLastCursorPos <em>Last Cursor Pos</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.Note#getTags <em>Tags</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.Note#getTitle <em>Title</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.Note#getText <em>Text</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.Note#getLastChange <em>Last Change</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.Note#getLastCursorPos <em>Last Cursor Pos</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.Note#getTags <em>Tags</em>}</li>
  * </ul>
  * </p>
  *
- * @see com.wimi.nve.model.notesmodel.NotesmodelPackage#getNote()
+ * @see org.wimi.nve.model.notesmodel.NotesmodelPackage#getNote()
  * @model
  * @generated
  */
@@ -40,14 +40,14 @@ public interface Note extends EObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Title</em>' attribute.
 	 * @see #setTitle(String)
-	 * @see com.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_Title()
+	 * @see org.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_Title()
 	 * @model
 	 * @generated
 	 */
 	String getTitle();
 
 	/**
-	 * Sets the value of the '{@link com.wimi.nve.model.notesmodel.Note#getTitle <em>Title</em>}' attribute.
+	 * Sets the value of the '{@link org.wimi.nve.model.notesmodel.Note#getTitle <em>Title</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Title</em>' attribute.
@@ -66,14 +66,14 @@ public interface Note extends EObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Text</em>' attribute.
 	 * @see #setText(String)
-	 * @see com.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_Text()
+	 * @see org.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_Text()
 	 * @model
 	 * @generated
 	 */
 	String getText();
 
 	/**
-	 * Sets the value of the '{@link com.wimi.nve.model.notesmodel.Note#getText <em>Text</em>}' attribute.
+	 * Sets the value of the '{@link org.wimi.nve.model.notesmodel.Note#getText <em>Text</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Text</em>' attribute.
@@ -91,7 +91,7 @@ public interface Note extends EObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Last Change</em>' attribute.
-	 * @see com.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_LastChange()
+	 * @see org.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_LastChange()
 	 * @model changeable="false"
 	 * @generated
 	 */
@@ -107,14 +107,14 @@ public interface Note extends EObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Last Cursor Pos</em>' attribute.
 	 * @see #setLastCursorPos(int)
-	 * @see com.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_LastCursorPos()
+	 * @see org.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_LastCursorPos()
 	 * @model
 	 * @generated
 	 */
 	int getLastCursorPos();
 
 	/**
-	 * Sets the value of the '{@link com.wimi.nve.model.notesmodel.Note#getLastCursorPos <em>Last Cursor Pos</em>}' attribute.
+	 * Sets the value of the '{@link org.wimi.nve.model.notesmodel.Note#getLastCursorPos <em>Last Cursor Pos</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Last Cursor Pos</em>' attribute.
@@ -125,7 +125,7 @@ public interface Note extends EObject
 
 	/**
 	 * Returns the value of the '<em><b>Tags</b></em>' reference list.
-	 * The list contents are of type {@link com.wimi.nve.model.notesmodel.Tag}.
+	 * The list contents are of type {@link org.wimi.nve.model.notesmodel.Tag}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Tags</em>' reference list isn't clear,
@@ -133,7 +133,7 @@ public interface Note extends EObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Tags</em>' reference list.
-	 * @see com.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_Tags()
+	 * @see org.wimi.nve.model.notesmodel.NotesmodelPackage#getNote_Tags()
 	 * @model
 	 * @generated
 	 */

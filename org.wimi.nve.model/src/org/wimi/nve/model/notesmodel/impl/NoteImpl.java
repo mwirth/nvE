@@ -1,10 +1,6 @@
 /**
  */
-package com.wimi.nve.model.notesmodel.impl;
-
-import com.wimi.nve.model.notesmodel.Note;
-import com.wimi.nve.model.notesmodel.NotesmodelPackage;
-import com.wimi.nve.model.notesmodel.Tag;
+package org.wimi.nve.model.notesmodel.impl;
 
 import java.util.Collection;
 import java.util.Date;
@@ -20,6 +16,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
+import org.wimi.nve.model.notesmodel.Note;
+import org.wimi.nve.model.notesmodel.NotesmodelPackage;
+import org.wimi.nve.model.notesmodel.Tag;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Note</b></em>'.
@@ -27,11 +27,11 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.wimi.nve.model.notesmodel.impl.NoteImpl#getTitle <em>Title</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.impl.NoteImpl#getText <em>Text</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.impl.NoteImpl#getLastChange <em>Last Change</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.impl.NoteImpl#getLastCursorPos <em>Last Cursor Pos</em>}</li>
- *   <li>{@link com.wimi.nve.model.notesmodel.impl.NoteImpl#getTags <em>Tags</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.impl.NoteImpl#getTitle <em>Title</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.impl.NoteImpl#getText <em>Text</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.impl.NoteImpl#getLastChange <em>Last Change</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.impl.NoteImpl#getLastCursorPos <em>Last Cursor Pos</em>}</li>
+ *   <li>{@link org.wimi.nve.model.notesmodel.impl.NoteImpl#getTags <em>Tags</em>}</li>
  * </ul>
  * </p>
  *

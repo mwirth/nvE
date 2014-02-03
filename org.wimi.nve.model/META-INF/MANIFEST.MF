@@ -7,9 +7,9 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: com.wimi.nve.model.notesmodel,
- com.wimi.nve.model.notesmodel.impl,
- com.wimi.nve.model.notesmodel.util
+Export-Package: org.wimi.nve.model.notesmodel,
+ org.wimi.nve.model.notesmodel.impl,
+ org.wimi.nve.model.notesmodel.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
  org.eclipse.ui;bundle-version="3.105.0"

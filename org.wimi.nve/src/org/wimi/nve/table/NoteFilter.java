@@ -2,8 +2,7 @@ package org.wimi.nve.table;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-
-import com.wimi.nve.model.notesmodel.Note;
+import org.wimi.nve.model.notesmodel.Note;
 
 public class NoteFilter extends ViewerFilter
 {

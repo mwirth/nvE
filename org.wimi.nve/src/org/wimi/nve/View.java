@@ -56,13 +56,12 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.wimi.nve.model.notesmodel.Model;
+import org.wimi.nve.model.notesmodel.Note;
+import org.wimi.nve.model.notesmodel.NotesmodelFactory;
+import org.wimi.nve.model.notesmodel.NotesmodelPackage;
+import org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl;
 import org.wimi.nve.table.NoteFilter;
-
-import com.wimi.nve.model.notesmodel.Model;
-import com.wimi.nve.model.notesmodel.Note;
-import com.wimi.nve.model.notesmodel.NotesmodelFactory;
-import com.wimi.nve.model.notesmodel.NotesmodelPackage;
-import com.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl;
 
 public class View extends ViewPart
 {

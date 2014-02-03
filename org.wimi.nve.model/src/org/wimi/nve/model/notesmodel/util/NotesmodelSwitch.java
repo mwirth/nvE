@@ -1,13 +1,13 @@
 /**
  */
-package com.wimi.nve.model.notesmodel.util;
-
-import com.wimi.nve.model.notesmodel.*;
+package org.wimi.nve.model.notesmodel.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+
+import org.wimi.nve.model.notesmodel.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see com.wimi.nve.model.notesmodel.NotesmodelPackage
+ * @see org.wimi.nve.model.notesmodel.NotesmodelPackage
  * @generated
  */
 public class NotesmodelSwitch<T> extends Switch<T>

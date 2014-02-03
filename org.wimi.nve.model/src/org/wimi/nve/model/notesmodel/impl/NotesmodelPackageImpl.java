@@ -1,12 +1,6 @@
 /**
  */
-package com.wimi.nve.model.notesmodel.impl;
-
-import com.wimi.nve.model.notesmodel.Model;
-import com.wimi.nve.model.notesmodel.Note;
-import com.wimi.nve.model.notesmodel.NotesmodelFactory;
-import com.wimi.nve.model.notesmodel.NotesmodelPackage;
-import com.wimi.nve.model.notesmodel.Tag;
+package org.wimi.nve.model.notesmodel.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -14,6 +8,12 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.wimi.nve.model.notesmodel.Model;
+import org.wimi.nve.model.notesmodel.Note;
+import org.wimi.nve.model.notesmodel.NotesmodelFactory;
+import org.wimi.nve.model.notesmodel.NotesmodelPackage;
+import org.wimi.nve.model.notesmodel.Tag;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,7 +55,7 @@ public class NotesmodelPackageImpl extends EPackageImpl implements NotesmodelPac
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see com.wimi.nve.model.notesmodel.NotesmodelPackage#eNS_URI
+	 * @see org.wimi.nve.model.notesmodel.NotesmodelPackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */

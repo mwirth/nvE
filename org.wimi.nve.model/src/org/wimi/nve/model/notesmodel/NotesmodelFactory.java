@@ -1,6 +1,6 @@
 /**
  */
-package com.wimi.nve.model.notesmodel;
+package org.wimi.nve.model.notesmodel;
 
 import org.eclipse.emf.ecore.EFactory;
 
@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EFactory;
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
  * <!-- end-user-doc -->
- * @see com.wimi.nve.model.notesmodel.NotesmodelPackage
+ * @see org.wimi.nve.model.notesmodel.NotesmodelPackage
  * @generated
  */
 public interface NotesmodelFactory extends EFactory
@@ -20,7 +20,7 @@ public interface NotesmodelFactory extends EFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	NotesmodelFactory eINSTANCE = com.wimi.nve.model.notesmodel.impl.NotesmodelFactoryImpl.init();
+	NotesmodelFactory eINSTANCE = org.wimi.nve.model.notesmodel.impl.NotesmodelFactoryImpl.init();
 
 	/**
 	 * Returns a new object of class '<em>Note</em>'.
