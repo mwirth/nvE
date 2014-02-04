@@ -27,6 +27,7 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableMapCellLabelProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -149,8 +150,9 @@ public class View extends ViewPart
 		viewer = new TableViewer(sashForm, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setLabelProvider(new ViewLabelProvider());
 
-		model = load();
-
+//		model = load();
+		model = createModel();
+		
 		ObservableListContentProvider contentProvider = new ObservableListContentProvider();
 
 		// put all attributes (from class Note) that are going to be shown into a map and associate the column title
@@ -352,15 +354,36 @@ public class View extends ViewPart
 		text.addKeyListener(new KeyAdapter()
 		{
 			@Override
-			public void keyReleased(KeyEvent e)
+			public void keyPressed(KeyEvent e)
 			{
-				if (e.stateMask == SWT.COMMAND && e.character == 'l')
+				if(Util.isMac())
 				{
-					System.out.println("command+l pressed");
-					filterBox.selectAll();
-					filterBox.setFocus();
+					if (e.stateMask == SWT.COMMAND && e.character == 'l')
+					{
+						System.out.println("command+l pressed");
+						filterBox.selectAll();
+						filterBox.setFocus();
+					}
 				}
-				else if (e.keyCode == SWT.ESC)
+				else
+				{
+					System.out.println("char" + e.character);
+					System.out.println("code"+e.keyCode);
+					System.out.println("mask"+e.stateMask);
+
+					if (e.keyCode == SWT.CTRL)
+					{
+						System.out.println("strg pressed");
+					}
+					if (e.keyCode == SWT.CTRL && e.character == 'l')
+					{
+						System.out.println("strg+l pressed");
+						filterBox.selectAll();
+						filterBox.setFocus();
+					}
+				}
+				
+				if (e.keyCode == SWT.ESC)
 				{
 					System.out.println("ESC pressed");
 					// Note note = (Note) ( (StructuredSelection) viewer.getSelection() ).getFirstElement();
@@ -375,6 +398,12 @@ public class View extends ViewPart
 					filterBox.setFocus();
 				}
 			}
+			
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+
+			}
 		});
 
 		text.addFocusListener(new FocusAdapter()
@@ -386,6 +415,9 @@ public class View extends ViewPart
 			@Override
 			public void focusLost(FocusEvent e)
 			{
+				if(actNote == null)
+					return;
+				
 				Text t = (Text) e.widget;
 				int caretPosition = t.getCaretPosition();
 				// do not set position if ESC was pressed
@@ -540,6 +572,6 @@ public class View extends ViewPart
 		// Get the first model element and cast it to the right type, in my
 		// example everything is hierarchical included in this first node
 		Model loadedModel = (Model) resource.getContents().get(0);
-		return loadedModel;
+		return KedModel;
 	}
 }
