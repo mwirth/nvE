@@ -371,6 +371,19 @@ public class View extends ViewPart
 					System.out.println("code"+e.keyCode);
 					System.out.println("mask"+e.stateMask);
 
+					if (e.keyCode == 108 && e.stateMask == 262144 && e.character == '\f')
+					{
+						System.out.println("strg+l pressed");
+						System.out.println("command+l pressed");
+						filterBox.selectAll();
+						filterBox.setFocus();
+					}
+
+					if (e.keyCode == SWT.CTRL && e.keyCode == SWT.CTRL)
+					{
+						System.out.println("strg+l pressed");
+					}
+					
 					if (e.keyCode == SWT.CTRL)
 					{
 						System.out.println("strg pressed");
