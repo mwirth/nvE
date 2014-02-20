@@ -27,6 +27,9 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ObservableMapCellLabelProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.source.VerticalRuler;
 import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -38,7 +41,9 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
@@ -57,20 +62,34 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventAdmin;
+import org.wimi.nve.editor.ViewerConfiguration;
 import org.wimi.nve.model.notesmodel.Model;
 import org.wimi.nve.model.notesmodel.Note;
 import org.wimi.nve.model.notesmodel.NotesmodelFactory;
 import org.wimi.nve.model.notesmodel.NotesmodelPackage;
 import org.wimi.nve.model.notesmodel.impl.NotesmodelPackageImpl;
 import org.wimi.nve.table.NoteFilter;
+import org.wimi.nve.util.ColorStore;
 
 public class View extends ViewPart
 {
 	public static final String ID = "org.wimi.nve.view";
 
 	private Note actNote;
-	private TableViewer viewer;
 	private Model model;
+
+	private Text titleBox;
+	private Text filterBox;
+
+	private TableViewer tableviewer;
+
+	private SourceViewer sourceviewer;
+	private Document doc;
 
 	class ViewContentProvider implements IStructuredContentProvider
 	{
@@ -131,28 +150,35 @@ public class View extends ViewPart
 	 */
 	public void createPartControl(Composite parent)
 	{
-		parent.setLayout(new GridLayout(1, false));
+		parent.setLayout(new GridLayout(2, false));
 
 		Composite textComposite = new Composite(parent, SWT.NONE);
 		textComposite.setLayout(new GridLayout(2, false));
 		textComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-		final Text filterBox = new Text(textComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
+		final Browser browser = new Browser(parent, SWT.NONE);
+		GridData browserGD = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2);
+		browserGD.widthHint = SWT.DEFAULT;
+		browserGD.heightHint = SWT.DEFAULT;
+		browser.setLayoutData(browserGD);
+
+		filterBox = new Text(textComposite, SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		filterBox.setLayoutData(gd);
 
-		final Text titleBox = new Text(textComposite, SWT.BORDER);
-		// titleBox.setLayoutData(gridData);
+		titleBox = new Text(textComposite, SWT.BORDER);
 
 		SashForm sashForm = new SashForm(parent, SWT.VERTICAL);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		viewer = new TableViewer(sashForm, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
-		viewer.setLabelProvider(new ViewLabelProvider());
+		tableviewer = new TableViewer(sashForm, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
+		tableviewer.setLabelProvider(new ViewLabelProvider());
+		getSite().setSelectionProvider(tableviewer);
+		// hookDoubleClickCommand();
 
-//		model = load();
-		model = createModel();
-		
+		model = load();
+		// model = createModel();
+
 		ObservableListContentProvider contentProvider = new ObservableListContentProvider();
 
 		// put all attributes (from class Note) that are going to be shown into a map and associate the column title
@@ -163,7 +189,7 @@ public class View extends ViewPart
 		for (EAttribute attribute : attributeMap.keySet())
 		{
 			// create a new column
-			TableViewerColumn tvc = new TableViewerColumn(viewer, SWT.LEFT);
+			TableViewerColumn tvc = new TableViewerColumn(tableviewer, SWT.LEFT);
 			// determine the attribute that should be observed
 			IObservableMap map = EMFProperties.value(attribute).observeDetail(contentProvider.getKnownElements());
 			tvc.setLabelProvider(new ObservableMapCellLabelProvider(map));
@@ -171,29 +197,33 @@ public class View extends ViewPart
 			tvc.getColumn().setText(attributeMap.get(attribute));
 			tvc.getColumn().setWidth(80);
 		}
-		viewer.setContentProvider(contentProvider);
+		tableviewer.setContentProvider(contentProvider);
 
-		final Table table = viewer.getTable();
+		final Table table = tableviewer.getTable();
 		table.setLinesVisible(true);
 
 		// set the model (which is a list of persons)
-		viewer.setInput(EMFProperties.list(NotesmodelPackage.Literals.MODEL__NOTES).observe(model));
+		tableviewer.setInput(EMFProperties.list(NotesmodelPackage.Literals.MODEL__NOTES).observe(model));
 
 		final NoteFilter filter = new NoteFilter();
-		viewer.addFilter(filter);
+		tableviewer.addFilter(filter);
 
-		final Text text = new Text(sashForm, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		text.setLayoutData(gridData);
+		sourceviewer = new SourceViewer(sashForm, new VerticalRuler(0), SWT.V_SCROLL | SWT.MULTI | SWT.H_SCROLL | SWT.BORDER);
+		doc = new Document();
+		doc.set("");
+		sourceviewer.setDocument(doc);
+		ViewerConfiguration conf = new ViewerConfiguration(new ColorStore(), null, browser);
+		sourceviewer.configure(conf);
+
 		sashForm.setWeights(new int[] { 1, 1 });
 
 		DataBindingContext dbc = new DataBindingContext();
 
 		// binding for the TextField which should display the text for the Note
-		IObservableValue targetText = WidgetProperties.text(SWT.Modify).observe(text);
+		IObservableValue targetText = WidgetProperties.text(SWT.Modify).observe(sourceviewer.getTextWidget());
 		IObservableValue targetBox = WidgetProperties.text(SWT.Modify).observe(titleBox);
 
-		IObservableValue actSelectedNote = ViewersObservables.observeSingleSelection(viewer);
+		IObservableValue actSelectedNote = ViewersObservables.observeSingleSelection(tableviewer);
 
 		IObservableValue textDetailValue =
 			EMFProperties.value(NotesmodelPackage.Literals.NOTE__TEXT).observeDetail(actSelectedNote);
@@ -203,7 +233,7 @@ public class View extends ViewPart
 		dbc.bindValue(targetText, textDetailValue);
 		dbc.bindValue(targetBox, boxDetailValue);
 
-		viewer.addSelectionChangedListener(new ISelectionChangedListener()
+		tableviewer.addSelectionChangedListener(new ISelectionChangedListener()
 		{
 
 			@Override
@@ -230,15 +260,6 @@ public class View extends ViewPart
 			}
 		});
 
-		filterBox.addTraverseListener(new TraverseListener()
-		{
-			@Override
-			public void keyTraversed(TraverseEvent e)
-			{
-				System.out.println("filterBox traversed");
-			}
-		});
-
 		filterBox.addModifyListener(new ModifyListener()
 		{
 
@@ -248,7 +269,7 @@ public class View extends ViewPart
 				if (filterBox.getText().length() <= 0)
 				{
 					filter.setSearchText("");
-					viewer.refresh();
+					tableviewer.refresh();
 				}
 			}
 		});
@@ -262,7 +283,7 @@ public class View extends ViewPart
 				if (e.keyCode == SWT.ARROW_DOWN)
 				{
 					int selRow = table.getSelectionIndex();
-					int length = viewer.getTable().getItems().length;
+					int length = tableviewer.getTable().getItems().length;
 					if (selRow == -1)
 					{
 						selRow = 0;
@@ -275,8 +296,8 @@ public class View extends ViewPart
 					{
 						selRow = 0;
 					}
-					actNote = (Note) viewer.getElementAt(selRow);
-					viewer.setSelection(new StructuredSelection(actNote), true);
+					actNote = (Note) tableviewer.getElementAt(selRow);
+					tableviewer.setSelection(new StructuredSelection(actNote), true);
 					e.doit = false;
 					filterBox.selectAll();
 				}
@@ -293,8 +314,8 @@ public class View extends ViewPart
 					{
 						selRow--;
 					}
-					actNote = (Note) viewer.getElementAt(selRow);
-					viewer.setSelection(new StructuredSelection(actNote), true);
+					actNote = (Note) tableviewer.getElementAt(selRow);
+					tableviewer.setSelection(new StructuredSelection(actNote), true);
 					e.doit = false;
 					filterBox.selectAll();
 				}
@@ -307,13 +328,15 @@ public class View extends ViewPart
 						Note note = createNote(filterBox.getText());
 						actNote = note;
 						// actNote = (Note) viewer.getElementAt(i);
-						viewer.setSelection(new StructuredSelection(actNote), true);
+						tableviewer.setSelection(new StructuredSelection(actNote), true);
+						StyledText text = sourceviewer.getTextWidget();
 						text.setFocus();
 					}
 					else
 					{
 						// Note note = (Note) ( (StructuredSelection) viewer.getSelection() ).getFirstElement();
 						// edit current note
+						StyledText text = sourceviewer.getTextWidget();
 						text.setFocus();
 						text.setSelection(actNote.getLastCursorPos());
 					}
@@ -331,32 +354,34 @@ public class View extends ViewPart
 				{
 					String t = filterBox.getText();
 					filter.setSearchText(t);
-					viewer.refresh();
+					tableviewer.refresh();
 					// search first match
-					TableItem[] items = viewer.getTable().getItems();
+					TableItem[] items = tableviewer.getTable().getItems();
 					for (int i = 0; i < items.length; i++)
 					{
 
 						if (items[i].getText().startsWith(t))
 						{
-							actNote = (Note) viewer.getElementAt(i);
-							viewer.setSelection(new StructuredSelection(actNote), true);
+							actNote = (Note) tableviewer.getElementAt(i);
+							tableviewer.setSelection(new StructuredSelection(actNote), true);
 							return;
 						}
 					}
 					// no fit Title found
 					StructuredSelection sel = new StructuredSelection();
-					viewer.setSelection(sel);
+					tableviewer.setSelection(sel);
 				}
 			}
 		});
+
+		final StyledText text = sourceviewer.getTextWidget();
 
 		text.addKeyListener(new KeyAdapter()
 		{
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
-				if(Util.isMac())
+				if (Util.isMac())
 				{
 					if (e.stateMask == SWT.COMMAND && e.character == 'l')
 					{
@@ -368,8 +393,8 @@ public class View extends ViewPart
 				else
 				{
 					System.out.println("char" + e.character);
-					System.out.println("code"+e.keyCode);
-					System.out.println("mask"+e.stateMask);
+					System.out.println("code" + e.keyCode);
+					System.out.println("mask" + e.stateMask);
 
 					if (e.keyCode == 108 && e.stateMask == 262144 && e.character == '\f')
 					{
@@ -383,7 +408,7 @@ public class View extends ViewPart
 					{
 						System.out.println("strg+l pressed");
 					}
-					
+
 					if (e.keyCode == SWT.CTRL)
 					{
 						System.out.println("strg pressed");
@@ -395,23 +420,23 @@ public class View extends ViewPart
 						filterBox.setFocus();
 					}
 				}
-				
+
 				if (e.keyCode == SWT.ESC)
 				{
 					System.out.println("ESC pressed");
 					// Note note = (Note) ( (StructuredSelection) viewer.getSelection() ).getFirstElement();
 					// actNote.setLastCursorPos(text.getCaretPosition());
-					Text t = (Text) e.widget;
-					int caretPosition = t.getCaretPosition();
+					StyledText t = (StyledText) e.widget;
+					int caretPosition = t.getCaretOffset();
 					actNote.setLastCursorPos(caretPosition);
 					// clear the selection
 					StructuredSelection sel = new StructuredSelection();
-					viewer.setSelection(sel);
+					tableviewer.setSelection(sel);
 
 					filterBox.setFocus();
 				}
 			}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e)
 			{
@@ -428,11 +453,11 @@ public class View extends ViewPart
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(actNote == null)
+				if (actNote == null)
 					return;
-				
-				Text t = (Text) e.widget;
-				int caretPosition = t.getCaretPosition();
+
+				StyledText t = (StyledText) e.widget;
+				int caretPosition = t.getCaretOffset();
 				// do not set position if ESC was pressed
 				System.out.println("actNote: " + actNote.getTitle() + " cursorPos: " + caretPosition);
 				actNote.setLastCursorPos(caretPosition);
@@ -483,7 +508,7 @@ public class View extends ViewPart
 	private void createDatabinding(Text text)
 	{
 		// 1. Observe changes in selection.
-		IObservableValue selection = ViewersObservables.observeSingleSelection(viewer);
+		IObservableValue selection = ViewersObservables.observeSingleSelection(tableviewer);
 
 		// 2. Observe the name property of the current selection.
 		IObservableValue detailObservable = BeansObservables.observeDetailValue(selection, "text", String.class);
@@ -585,6 +610,50 @@ public class View extends ViewPart
 		// Get the first model element and cast it to the right type, in my
 		// example everything is hierarchical included in this first node
 		Model loadedModel = (Model) resource.getContents().get(0);
-		return KedModel;
+		return loadedModel;
+	}
+
+	// private void hookDoubleClickCommand()
+	// {
+	// viewer.addDoubleClickListener(new IDoubleClickListener()
+	// {
+	// public void doubleClick(DoubleClickEvent event)
+	// {
+	// IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
+	// try
+	// {
+	// handlerService.executeCommand("org.wimi.nve.editor.openeditor", null);
+	// }
+	// catch (Exception ex)
+	// {
+	// throw new RuntimeException("org.wimi.nve.editor.openeditor not found");
+	// }
+	// }
+	// });
+	// }
+
+	private void sendNote(Note note)
+	{
+		BundleContext ctx = FrameworkUtil.getBundle(View.class).getBundleContext();
+		if (ctx == null)
+		{
+			System.err.println("can not send results, BundleContext not available");
+			return;
+		}
+
+		ServiceReference<EventAdmin> ref = ctx.getServiceReference(EventAdmin.class);
+		if (ref == null)
+		{
+			System.err.println("can not send results, EventAdminService not available");
+			return;
+		}
+
+		EventAdmin eventAdmin = ctx.getService(ref);
+
+		Map<String, Object> properties = new HashMap<String, Object>();
+		properties.put("NOTE", note);
+
+		Event event = new Event("viewcommunication/syncEvent-", properties);
+		eventAdmin.sendEvent(event);
 	}
 }

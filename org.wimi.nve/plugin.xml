@@ -3,15 +3,6 @@
 <plugin>
 
    <extension
-         id="application"
-         point="org.eclipse.core.runtime.applications">
-      <application>
-         <run
-               class="org.wimi.nve.NVEApplication">
-         </run>
-      </application>
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             name="Perspective"
@@ -22,9 +13,10 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="View"
+            allowMultiple="false"
             class="org.wimi.nve.View"
-            id="org.wimi.nve.view">
+            id="org.wimi.nve.view"
+            name="View">
       </view>
    </extension>
    <extension
@@ -32,11 +24,14 @@
       <perspectiveExtension
             targetID="*">
          <view
-               standalone="true"
+               closeable="false"
+               id="org.wimi.nve.view"
                minimized="false"
-               relative="org.eclipse.ui.editorss"
+               moveable="false"
                relationship="left"
-               id="org.wimi.nve.view">
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
          </view>
       </perspectiveExtension>
    </extension>
@@ -52,18 +47,6 @@
             </command>
          </menu>
       </menuContribution>
-   </extension>
-   <extension
-         id="product"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.wimi.nve.application"
-            name="nvE">
-         <property
-               name="appName"
-               value="nvE">
-         </property>
-      </product>
    </extension>
 
 </plugin>
