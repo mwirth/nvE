@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="nvE" uid="org.wimi.nve.app.product" id="org.wimi.nve.app.product" application="org.wimi.nve.app.app" version="0.1" useFeatures="false" includeLaunchers="true">
+<product name="nvE" uid="org.wimi.nve.app.product" id="org.wimi.nve.app.product" application="org.wimi.nve.app.app" version="1.0.0" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -72,10 +72,5 @@
       <plugin id="org.wimi.nve.model"/>
    </plugins>
 
-   <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
-      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="0" />
-   </configurations>
 
 </product>

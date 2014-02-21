@@ -1,6 +1,7 @@
 package org.wimi.nve.editor;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -62,9 +63,13 @@ public class ViewerConfiguration extends TextSourceViewerConfiguration
 				// new StringBuilder(
 				// "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><html><head><title>Title</title><link rel=\"stylesheet\" type=\"text/css\" href=\"github.css\"></head><body>");
 
+				String cssPath = Platform.getInstanceLocation().getURL().getPath();
+				System.out.println("cssPath:" + cssPath);
+
 				StringBuilder sb =
 					new StringBuilder(
-						"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><html><head><title>Title</title><link rel=\"stylesheet\" type=\"text/css\" href=\"/Users/mwirth/Dev/git/nvE/org.wimi.nve/src/github.css\"></head><body>");
+						"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><html><head><title>Title</title><link rel=\"stylesheet\" type=\"text/css\" href=\""
+							+ cssPath + "github.css\"></head><body>");
 
 				MarkdownProcessor markdown = new MarkdownProcessor();
 				final String htmlText = markdown.markdown(document.get());
