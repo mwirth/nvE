@@ -23,6 +23,26 @@
                name="appName"
                value="nvE">
          </property>
+         <property
+               name="windowImages"
+               value="icons/nve16.png,icons/nve32.png,icons/nve48.png,icons/nve64.png,icons/nve128.png">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
    </extension>
 

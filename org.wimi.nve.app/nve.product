@@ -3,6 +3,7 @@
 
 <product name="nvE" uid="org.wimi.nve.app.product" id="org.wimi.nve.app.product" application="org.wimi.nve.app.app" version="1.0.0" useFeatures="false" includeLaunchers="true">
 
+
    <configIni use="default">
    </configIni>
 
@@ -10,12 +11,20 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <launcher>
+   <windowImages i16="/org.wimi.nve.app/icons/nve16.png" i32="/org.wimi.nve.app/icons/nve32.png" i48="/org.wimi.nve.app/icons/nve48.png" i64="/org.wimi.nve.app/icons/nve64.png" i128="/org.wimi.nve.app/icons/nve128.png"/>
+
+   <splash
+      location="org.wimi.nve.app"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,252,445,20"
+      startupForegroundColor="000000" />
+   <launcher name="nvE">
       <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
